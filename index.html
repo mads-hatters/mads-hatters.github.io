@@ -3,7 +3,7 @@
 <head><meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>FinalReport</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>Orbital Congestion Report</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 
 
 
@@ -867,6 +867,7 @@ body{
   font-size:14px;
   font-weight:400;
   color:#182026;
+  width:1024px;
   font-family:-apple-system, "BlinkMacSystemFont", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Open Sans", "Helvetica Neue", "Icons16", sans-serif; }
 
 p{
@@ -14758,7 +14759,7 @@ Plotly does have the capability for painting an image onto a 3D surface but only
 <thead><tr>
 <th style="text-align:left"><strong>Selected Satellite</strong></th>
 <th style="text-align:left"><strong>NORAD ID</strong></th>
-<th style="text-align:left"><div style="width:120px">**Time Range**</div></th>
+<th style="text-align:left"><div style="width:120px"><strong>Time Range</strong></div></th>
 <th style="text-align:left"><strong>Reason</strong></th>
 </tr>
 </thead>
@@ -14820,9 +14821,9 @@ Plotly does have the capability for painting an image onto a 3D surface but only
 <p>Based on the results, "rolling_10_neightor_diff", comparing two rolling windows with size of before and after a point, with a threshold of 0.008 was selected for detecting inclination adjustment maneuvers, and a "rolling_3_neightor_diff" with a threshold of 0.025 was selected for detecting orbit raising / lowering maneuvers.  The results:</p>
 <table>
 <thead><tr>
-<th style="text-align:left"><div style="width:120px">**Satellite**</div></th>
+<th style="text-align:left"><div style="width:120px"><strong>Satellite</strong></div></th>
 <th style="text-align:left"><strong>Note</strong></th>
-<th style="text-align:left"><div style="width:550px">**Resulting Image**</div></th>
+<th style="text-align:left"><div style="width:550px"><strong>Resulting Image</strong></div></th>
 </tr>
 </thead>
 <tbody>
@@ -14881,9 +14882,9 @@ Plotly does have the capability for painting an image onto a 3D surface but only
 <p>The following images shows each satellite's semimajor axis, inclination, and detected maneuvers in the top chart while the bottom one shows the first relevant SOCRATES date in gree, the probability in purple, and the time of closest approach in red.  The grey line represents when a new TLE entry became available, updating the satellites trajectory and position.  In the case of a RMM happening, a maneuver period should be highlighted near or after the high probability being predicted.</p>
 <table>
 <thead><tr>
-<th style="text-align:left"><div style="width:100px">**Risk Mitigation Maneuver Group**</div></th>
+<th style="text-align:left"><div style="width:100px"><strong>Risk Mitigation Maneuver Group</strong></div></th>
 <th style="text-align:left"><strong>Description</strong></th>
-<th style="text-align:left"><div style="width:500px">**Image**</div></th>
+<th style="text-align:left"><div style="width:500px"><strong>Image</strong></div></th>
 </tr>
 </thead>
 <tbody>
@@ -14963,7 +14964,7 @@ Plotly does have the capability for painting an image onto a 3D surface but only
 <p><a id="av-agabbard"></a></p>
 <h3 id="F.-Debris-Gabbard-Diagram-Animation">F. Debris Gabbard Diagram Animation<a class="anchor-link" href="#F.-Debris-Gabbard-Diagram-Animation">&#182;</a></h3><p>The growth of debris in LEO as well as contributions by individual debris generating events can be visualized as a gabbard diagram animation.  Each object is represented by two points in the gabbard diagram, a lower periapsis point and a higher apoapsis along the same x-axis.  An object with an elliptical orbit will have the two points further away, while a stationary orbit will have points close together.  A diagonal border separating the periapsis and apoapsis points formed by circular orbits of varying orbital periods can be seen on the diagram.</p>
 <p>Orbits decay naturally due to factors and the points on the gabbard diagram will appear to move towards the bottom left corner.  For orbits around earth, factors such as atmospheric drag and thermal radiation can affect satellites at altitudes as high as 700–800 km during periods of increased solar activity.  Higher rates of orbital decay can be observed during periods with increased solar activtiy in 1979, 1989, 2001, 2003, 2011, and 2014.</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/SFxkE_S9HJ0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><p>Note: Due to small particle sizes, full screen viewing is recommended.</p>
+<iframe width="800" height="500" src="https://www.youtube.com/embed/SFxkE_S9HJ0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><p>Note: Due to small particle sizes, full screen viewing is recommended.</p>
 
 </div>
 </div>
@@ -14972,31 +14973,14 @@ Plotly does have the capability for painting an image onto a 3D surface but only
 <p><a href="#table-of-contents">Back to Top</a></p>
 <hr>
 <p><a id="conclusion"></a></p>
-<h2 id="7.-Conclusion">7. Conclusion<a class="anchor-link" href="#7.-Conclusion">&#182;</a></h2><p><em>Not sure what to write here</em></p>
-<p>1 section we talk about space conclusions, takeaways</p>
-<p>2 reflection on milestone 1 process, if we were to continue what we would do, or if we were to do it again, how we would have done it differently</p>
-<ul>
-<li>ideas:</li>
-<li>TLE's inaccuracy lead us to deadends (give example of iridium + cosmos)</li>
-<li>Future work</li>
-<li><ul>
-<li>DVC for data repo</li>
-</ul>
-</li>
-<li><ul>
-<li>Docker for env sharing / or pip venv</li>
-</ul>
-</li>
-<li><ul>
-<li>Improve maneuver with potential ground truth maneuver data from spacetrack</li>
-</ul>
-</li>
-<li><ul>
-<li>Modulize reusable notebook code into classes </li>
-</ul>
-</li>
-</ul>
-<p><a href="https://docs.google.com/document/d/1wQlzEu_E8RMaGDkR-oU7zjx-7p8qaJYxWeAFaQaWc3w/edit">link to google doc collab</a></p>
+<h2 id="7.-Conclusion">7. Conclusion<a class="anchor-link" href="#7.-Conclusion">&#182;</a></h2><p><em>Both short/long versions are on here now</em></p>
+<p>Our venture into space began in 1957 when the first artificial satellite Sputnik was launched. Since then the manufacturing and launching of satellites have been facing increasing demand thanks to high-speed mobile communications, broadband internet, navigation and other purposes. With the unprecedented launch of satellite constellations planned by SpaceX, OneWeb, Amazon and other private companies, some believe that space debris in LEO will reach a tipping point in no time like what the former head of NASA's Orbital Debris Program Office, Donald Kessler proposed in 1978 (Kessler Syndrome). Others believe that the issue is not imminent because objects in LEO are likely to decay faster than in other orbits. Regardless of what we believe, if we are not beginning to protect space by operating responsibly and actively removing space junk, in the long run, space activities will no longer be viable.</p>
+<p>It is clear from this analysis that congestion in space is quickly becoming a pressing issue.  With the surge of satellite constellations either currently being constructed or planned to be, a multi-faceted approach will be necessary to address this world-wide problem.  Satellites will require autonomous collision avoidance systems, new international laws will be necessary to enforce safely disposing or decommissioning satellites, and new technologies are needed to clear up large and small debris whipping around the Earth at extreme speeds.</p>
+<p>Another takeaway from this report is that TLE data, being the only publicly available satellite position data available, is far less accurate than what was expected.  While it does fulfill the purpose of estimating a satellite’s position, these estimates are not accurate enough for some analysis like collision prediction and they quickly become wildly inaccurate over time like when simulating a satellite breakup event.</p>
+<p>As part of this project work, a request was made to the US Space Command to publish the work publicly and to receive privileged access to some non-public information.  At the time of this writing, permission for only the former was granted.  Should the latter be granted, it is likely the maneuver detection algorithm could be trained using this ground truth data and thus be significantly improved.</p>
+<hr>
+
+<p>From the analysis, we can observe a surge of satellite constellations in recent years and in the near future. For sustainable space exploration, new international laws will be necessary to enforce safely disposing or decommissioning satellites, and new technologies are needed to clear up large and small debris whipping around the Earth at extreme speeds. Due to the increasing number of satellites and precision limitations with TLE data, meaningful conjunction prediction is no longer possible.  In future studies, we can leverage machine learning techniques using non-public data provided by US Space Command. If our request was granted, we could more accurately analyze the impact of increasing density in LEO on collision probability.</p>
 
 </div>
 </div>
