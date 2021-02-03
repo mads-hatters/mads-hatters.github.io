@@ -3,7 +3,7 @@
 <head><meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Orbital Congestion Report</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>Space Conjestion Report</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 
 
 
@@ -867,7 +867,6 @@ body{
   font-size:14px;
   font-weight:400;
   color:#182026;
-  width:1024px;
   font-family:-apple-system, "BlinkMacSystemFont", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Open Sans", "Helvetica Neue", "Icons16", sans-serif; }
 
 p{
@@ -14262,11 +14261,13 @@ a.anchor-link {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h1 id="Orbital-Congestion">Orbital Congestion<a class="anchor-link" href="#Orbital-Congestion">&#182;</a></h1><hr>
 <p><strong>Milestone 1 Project - SIADS 591 &amp; 592</strong>
-<br>February 2, 2021</p>
+<br>February 3, 2021</p>
 <p><em>Project Team:</em><br>
 Tim Chen (ttcchen@umich.edu), Sophie Deng (sophdeng@umich.edu), and Nicholas Miller (nmill@umich.edu)</p>
 <p><em>Instructional Team:</em><br>
 Elle O'Brien (elleobri@umich.edu), Chris Teplovs (cteplovs@umich.edu), and Anthony Whyte (arwhyte@umich.edu)</p>
+<p><em>GitHub Repository:</em><br>
+<a href="https://github.com/mads-hatters/SIADS-591-Orbital-Congestion">https://github.com/mads-hatters/SIADS-591-Orbital-Congestion</a></p>
 <hr>
 <p><a id="table-of-contents"></a></p>
 <h2 id="1.-Table-of-Contents">1. Table of Contents<a class="anchor-link" href="#1.-Table-of-Contents">&#182;</a></h2><!--*Note to Team: Table of Contents needs to be manually updated if the order or headers change below.  Please keep this in mind when making changes*-->
@@ -14322,7 +14323,7 @@ Elle O'Brien (elleobri@umich.edu), Chris Teplovs (cteplovs@umich.edu), and Antho
 <hr>
 <p><a id="intro"></a></p>
 <h2 id="3.-Brief-Introduction-to-Orbital-Mechanic">3. Brief Introduction to Orbital Mechanic<a class="anchor-link" href="#3.-Brief-Introduction-to-Orbital-Mechanic">&#182;</a></h2><p>The following are a few terms that will be used in this document. For a comprehensive list, please check the <a href="#glossary">glossary</a>.</p>
-<p><img src="images/orbit_terms.png" alt="Oribital Mecahnic Terms" title="Oribital Mecahnic Terms"></p>
+<p><span style="text-align:center;display:block"><img src="images/orbit_terms.png" alt="Oribital Mecahnic Terms" /></span></p>
 
 </div>
 </div>
@@ -14460,16 +14461,16 @@ Elle O'Brien (elleobri@umich.edu), Chris Teplovs (cteplovs@umich.edu), and Antho
 <p><a id="data-manipulation"></a></p>
 <h2 id="5.-Data-Manipulation-Methods">5. Data Manipulation Methods<a class="anchor-link" href="#5.-Data-Manipulation-Methods">&#182;</a></h2><p><a id="dm-socrates"></a></p>
 <h3 id="A.-SOCRATES-Web-Scrapper">A. SOCRATES Web Scrapper<a class="anchor-link" href="#A.-SOCRATES-Web-Scrapper">&#182;</a></h3><h4 id="SOCRATES-Scrapper">SOCRATES Scrapper<a class="anchor-link" href="#SOCRATES-Scrapper">&#182;</a></h4><p><a href="https://celestrak.com/SOCRATES/">SOCRATES</a> is a web service provided to the satellite community by the Center for Space Standards &amp; Innovation (CSSI) which provides information on pending intercepts of satellites within a week.  This information is valuable for predicting if and when two satellites collide based on probability and estimated minimal distance.
-To capture this information, a web scrapper called <a href="job/socrates/nm_win/socrates_scrapper_nm.py"><code>socrates_scrapper_nm.py</code></a> was developed using the <code>BeautifulSoup</code> python package.  The web data is tabularized and contains a single conjunction event across two rows which made using pandas built-in scrapper less reliable:</p>
-<p><img src="images/socrates_raw.png" alt="SOCRATES Webpage Data" style="width: 75%;"/></p>
+To capture this information, a web scrapper called <a href="https://github.com/mads-hatters/SIADS-591-Orbital-Congestion/blob/main/job/socrates/nm_win/socrates_scrapper_nm.py"><code>socrates_scrapper_nm.py</code></a> was developed using the <code>BeautifulSoup</code> python package.  The web data is tabularized and contains a single conjunction event across two rows which made using pandas built-in scrapper less reliable:</p>
+<p><span style="text-align:center;display:block"><img src="images/socrates_raw.png" alt="SOCRATES Webpage Data" style="width: 75%;"/></span></p>
 <p>Twice a day, the information is updated and produces a massive amount of data, therefore, SOCRATES provides three different methods for retrieval [Maximum Probability, Minimum Range, Start Time].  And the maximum number of rows retrieved for each is 1000 events.  Because of this, the web scrapper loops three times capturing the maximum amount of data.
 The scrapper was written to run as a background job with output messages sent to a log file.  Each execution of the scrapping job dumps the results into a new dataframe which is then saved in <code>./data/socrates/socrates_YYYYMMDDHHMISS.csv.gz</code>.  The resulting structure:</p>
-<p><img src="images/socrates_scrapper_output.png" alt="SOCRATES Extracted Data" style="width: 90%;"/></p>
+<p><span style="text-align:center;display:block"><img src="images/socrates_scrapper_output.png" alt="SOCRATES Extracted Data" style="width: 90%;"/></span></p>
 <h4 id="Getting-TLE-data">Getting TLE data<a class="anchor-link" href="#Getting-TLE-data">&#182;</a></h4><p>One of the goals was to visualize the close encounters reported by SOCRATES in an effective way.  To accomplish this, the TLE for each satellite is necessary.  Getting the latest TLE for a satellite results in a large margin of error which is one of the reasons why TLEs are frequently updated.   Space-Track.org has a retrieval class called <code>gp_history</code> for historical TLE records that was used for this data collection.</p>
 <p>One of the challenges in accessing the historic TLE data is that the API used to retrieve <code>gp_history</code> data is limited to 300 requests per hour.  While exceeding it is possible and was done initially, Space-Track.org sends an email warning that repeated violations result in a permanent ban.  Since each SOCRATES grab resulted in 3000 satellite pairs twice a day, creativity was necessary to grab the data in larger chunks and thus limiting the number of requests.  This was accomplished by looking at all the SOCRATES data and comparing that to the TLE data previously retrieved and getting a list of missing (new) satellite pairs.  Each satellite then needed an epoch date—the date of when a TLE was captured—to know which TLE should be retrieved from <code>gp_history</code>.  SOCRATES didn’t contain this date but instead contained a “Days Since Epoch” value allowing for the backdate calculation.  This unfortunately had an error of about five minutes but TLEs are at most captured every 30 minutes and usually are hours or days apart for one satellite.</p>
 <p>To address the soft cap of 300 requests an hour, the missing data was sorted by epoch date and grouped in batches of approximately 100 and assigned a bin number.  Each bin would represent a single request.  The request was then built passing a list of satellite NORAD ID numbers that existed in the batch and a start/end epoch window.  This could result in the API returning multiple TLEs for the same satellite so the results needed to compare the epoch on the TLE to the approximate epoch calculated previously. The captured TLEs were saved off to a CSV as a safe guard if the merging process should fail so another API grab wouldn’t be necessary (this redundancy was never needed).  The merging process consolidated each satellite pair with their TCA (time of closest approach) and appended the data to the TLE grab dataframe which would later be joined on demand with the SOCRATES data.</p>
-<p>The code for this TLE grab and merging takes place in a script called <a href=""><code>socrates_gp_history_tle_grab_nm.py</code></a>.  This script was executed after each run of the web scrapper via a background job on a personal computer left on for about two months.</p>
-<p><img src="images/sample_run3.png" alt="Sample Scrapper Run" style="width: 60%;"/></p>
+<p>The code for this TLE grab and merging takes place in a script called <a href="https://github.com/mads-hatters/SIADS-591-Orbital-Congestion/blob/main/job/socrates/nm_win/socrates_gp_history_tle_grab_nm.py"><code>socrates_gp_history_tle_grab_nm.py</code></a>.  This script was executed after each run of the web scrapper via a background job on a personal computer left on for about two months.</p>
+<p><span style="text-align:center;display:block"><img src="images/sample_run3.png" alt="Sample Scrapper Run" style="width: 60%;"/></span></p>
 <p>Above is an example manual run.  The first stage is the web scrapper which sends the output to a log file <code>log.log</code>.  The second stage is the TLE grab shows the grab of 4502 missing TLE entries grouped into 46 API requests and then after merged with the SOCRATES TCA for each pair.</p>
 <h4 id="SOCRATES-Python-Package">SOCRATES Python Package<a class="anchor-link" href="#SOCRATES-Python-Package">&#182;</a></h4><p>Since the raw SOCRATES data contains many duplicates, there might be cases where the raw data might be analyzed and other cases where only the unique records joined with TLE entries would be necessary.  To resolve this challenge, a new python package <code>socrates</code> was created with several different options for loading the SOCRATES data. Those functions include:</p>
 <ul>
@@ -14495,7 +14496,7 @@ The scrapper was written to run as a background job with output messages sent to
 <pre><code>pip install satellite-czml
 
 </code></pre>
-<p>This python package, like <code>tle2czml</code>, relies on a custom version of another python package called <a href="https://pypi.org/project/czml/"><code>czml</code></a>, developed by <a href="https://pypi.org/user/Christian.Ledermann/">Christian Ledermann</a> and the python package <a href="https://pypi.org/project/sgp4/"><code>spg4</code></a>, developed by <a href="https://pypi.org/user/brandonrhodes/">Brandon Rhodes</a> (coincidently, the same developer of <code>skyfield</code>, discussed below).  <code>satellite_czml</code> is now used in the dashboard to create the intercept and starlink animations.</p>
+<p>This python package, like <code>tle2czml</code>, relies on a custom version of another python package called <a href="https://pypi.org/project/czml/"><code>czml</code></a>, developed by <a href="https://pypi.org/user/Christian.Ledermann/">Christian Ledermann</a> and the python package <a href="https://pypi.org/project/sgp4/"><code>spg4</code></a>, developed by <a href="https://pypi.org/user/brandonrhodes/">Brandon Rhodes</a> (coincidently, the same developer of <code>skyfield</code>, discussed below).  <code>satellite_czml</code> is now used in the dashboard to create the intercept and Starlink animations.</p>
 <p><a id="dm-spacetrack"></a></p>
 <h3 id="D.-Downloading-Satellite-gp_history-Data">D. Downloading Satellite <code>gp_history</code> Data<a class="anchor-link" href="#D.-Downloading-Satellite-gp_history-Data">&#182;</a></h3><h4 id="Initial-Manual-Download-Process">Initial Manual Download Process<a class="anchor-link" href="#Initial-Manual-Download-Process">&#182;</a></h4><p>Space-Track provides a <code>gp_history</code> API for accessing all historical satellite TLE data.  For the initial exploration and static charts, individual CSV files from the <code>gp_history</code> request class (<a href="https://www.space-track.org/documentation#api-restRulesAPIClasses">request classes documentation</a>) generated by the query builder was manually downloaded.  However, this process was tedious and did not scale when comparing multiple satellites across different time periods, which is necessary for maneuver detection.  Also considering other analysis which rely on <code>gp_history</code>, an automated processes to acquire bulk data became a necessity.</p>
 <h4 id="Setting-Up-Automatic-Downloads">Setting Up Automatic Downloads<a class="anchor-link" href="#Setting-Up-Automatic-Downloads">&#182;</a></h4><p>Some challenges that had to be resolved for bulk downloads</p>
@@ -14554,8 +14555,8 @@ The scrapper was written to run as a background job with output messages sent to
 </tbody>
 </table>
 <h4 id="Reducing-Orbital-Elements-Used">Reducing Orbital Elements Used<a class="anchor-link" href="#Reducing-Orbital-Elements-Used">&#182;</a></h4><p>When examining ISS's orbit data, some of the orbital elements appear to have direct correlation (such as <code>MEAN_MOTION</code>, <code>SEMIMAJOR_AXIS</code>, <code>PERIOD</code>, <code>APOAPSIS</code>, and <code>PERIAPSIS</code>, as well as <code>BSTAR</code> and <code>MEAN_MOTION_DOT</code>) while others are less suitable due to their periodic variance and noise (such as <code>ECCENTRICITY</code>, <code>ARG_OF_PERICENTER</code>, and <code>MEAN_ANOMALY</code>).</p>
-<p><img src="images/iss_maneuver.png" alt="iss_maneuver.png"></p>
-<center>ISS orbital elements from TLE entries during a period between 2014 and 2016</center><p>Further research (<a href="https://satellitesafety.gsfc.nasa.gov/maneuvers.html">source, NASA - Satellite Safety</a>) revealed that satellites mainly maneuver by raising or lowering their orbits, or adjusting their inclination.  A decision to only look at <code>SEMIMAJOR_AXIS</code> and <code>INCLINATION</code> to determine orbital maneuvers was made.  This resulted in a reduction of 9 columns from the dataset.</p>
+<p><span style="text-align:center;display:block"><img src="images/iss_maneuver.png"></span></p>
+<center>ISS orbital elements from TLE entries during a period between 2014 and 2016</center><p>Further research (<a href="https://satellitesafety.gsfc.nasa.gov/maneuvers.html">NASA - Satellite Safety</a>) revealed that satellites mainly maneuver by raising or lowering their orbits, or adjusting their inclination.  A decision to only look at <code>SEMIMAJOR_AXIS</code> and <code>INCLINATION</code> to determine orbital maneuvers was made.  This resulted in a reduction of 9 columns from the dataset.</p>
 <h4 id="Reducing-Memory-Footprint-via-dtype-Conversion">Reducing Memory Footprint via <code>dtype</code> Conversion<a class="anchor-link" href="#Reducing-Memory-Footprint-via-dtype-Conversion">&#182;</a></h4><p>However, with over 32,147,425 rows of TLE data for the artficial satellites, it still took up significant memory and further reduction was preferred.  With the data being stored as 64-bit numbers, the use of 16 and 32-bit numbers were considered.</p>
 <table>
 <thead><tr>
@@ -14592,7 +14593,7 @@ The scrapper was written to run as a background job with output messages sent to
 </tr>
 </tbody>
 </table>
-<p><em>Note </em>: While <code>uint16</code> should be sufficient to represent <code>NORAD_CAT_ID</code> for the current data, it is important to keep in mind that 80,000-89,999 range is assigned to objects with insufficient fidelity for publication in the public satellite catalog (<a href="https://www.space-track.org/documentation#faq">source, Space-Track FAQ</a>), and that the SATCAT is growing at a much quicker rate compared to before.  The Combined Force Space Component Command also has increased tracking capacity with the introduction of a new Space Fence on Kwajalein Atoll in March 2020.  With over 200 objects being added to the SATCAT in Jan, 2021 already, the maximum allowable value for <code>uint16</code> of <code>65535</code> may be reached rather soon (currently at 47,436 as of writing).*</p>
+<p><em>Note </em>: While <code>uint16</code> should be sufficient to represent <code>NORAD_CAT_ID</code> for the current data, it is important to keep in mind that 80,000-89,999 range is assigned to objects with insufficient fidelity for publication in the public satellite catalog (<a href="https://www.space-track.org/documentation#faq">Space-Track FAQ</a>), and that the SATCAT is growing at a much quicker rate compared to before.  The Combined Force Space Component Command also has increased tracking capacity with the introduction of a new Space Fence on Kwajalein Atoll in March 2020.  With over 200 objects being added to the SATCAT in Jan, 2021 already, the maximum allowable value for <code>uint16</code> of <code>65535</code> may be reached rather soon (currently at 47,436 as of writing).*</p>
 <h4 id="Final-Reduction-Results">Final Reduction Results<a class="anchor-link" href="#Final-Reduction-Results">&#182;</a></h4><p>Here are the final reduction results from a sampled slice from the entire dataset (results can be found at <a href="https://github.com/mads-hatters/SIADS-591-Orbital-Congestion/blob/main/job/space_track/filter_raw_data_payload_maneuvers_report_data.ipynb"><code>filter_raw_data_payload_maneuvers_report_data.ipynb</code></a>):</p>
 <table>
 <thead><tr>
@@ -14666,7 +14667,7 @@ The scrapper was written to run as a background job with output messages sent to
 <h3 id="G.-Gabbard-Animation-for-Debris">G. Gabbard Animation for Debris<a class="anchor-link" href="#G.-Gabbard-Animation-for-Debris">&#182;</a></h3><p>A Gabbard diagram shows the <code>PERIOD</code> of objects on the x-axis and their <code>APOAPSIS</code> and <code>PERIAPSIS</code> on the y-axis.  An animated version of the Gabbard diagram would need these data over a period of time.</p>
 <h4 id="Grouping-Data-for-each-Animation-Frame">Grouping Data for each Animation Frame<a class="anchor-link" href="#Grouping-Data-for-each-Animation-Frame">&#182;</a></h4><p>Proof of concept for the animation was done using a small timeframe by grouping entries using the <code>dt.week</code>.  This was not an ideal solution though, because week numbers do not reset with a year change, resulting in a flashback frame every year, and none of the aggregate features represented the satelite's position well due to how wide the time window was.</p>
 <p>Since a datetime <code>groupby</code> cannot be used, <code>reindex</code> and <code>interpolate</code> were used instead to have a more accurate representation of the data.  A proof of concept was done by first performing a <code>unstack</code> so each satellite has its own column, then performing a reindex over the entire time period and interpolate missing data in between.  However, this failed to scale spectacularly as the DataFrame size is now <code>m</code> <em> <code>n</code> where <code>m</code> is the number of objects </em> 3 (one for each of <code>PERIOD</code>,  <code>APOAPSIS</code>, and <code>PERIAPSIS</code>) and <code>n</code> is the number of frames - exceeding billions of cells.</p>
-<p>An alternate strategy was developed, where each satellite would only generate its own valid time range in order to avoid the <code>NaN</code> cells prior to the it being tracked or after it decayed.  This was achieved by performing the split-apply-combine process, grouping by <code>NORAD_CAT_ID</code> then applying the datetime index transformation along with the interpolation.</p>
+<p>An alternate strategy was developed, where each satellite would only generate its own valid time range in order to avoid the <code>NaN</code> cells prior to the it being tracked or after it decayed.  This was achieved by performing the split-apply-combine process, grouping by <code>NORAD_CAT_ID</code> then applying the datetime index transformation along with the interpolation.  Due to some errors in the data in the late 1970s, where incorrect TLEs were being attributed to satellites, it was also necessary to remove some outliers and to not interpolate impossible cases.</p>
 <h4 id="Applying-dtype-Conversion">Applying <code>dtype</code> Conversion<a class="anchor-link" href="#Applying-dtype-Conversion">&#182;</a></h4><p>To reduce memory usage, <code>dtype</code> conversion similar to the earlier maneuver detection process was applied.  However, there is a difference in that the data for Gabbard diagrams allow for some precision loss since it can hardly be noticed due to the limited size of the charting area.  This allows additional optimization when looking for a suitable <code>dtype</code> to use.  The <code>dtype</code> conversion will be applied prior to grouping and interpolation.  Every little <em>bit</em> (Ba Dum Tss!) counts with the with 86,326,993 rows of data!</p>
 <table>
 <thead><tr>
@@ -14710,7 +14711,9 @@ The scrapper was written to run as a background job with output messages sent to
 </tbody>
 </table>
 <p>*Note: <code>pd.UInt16Dtype()</code> will both be used for the <code>pd.NA</code> support for integers which will come into play during the reindexing step prior to interpolation.  However, Pandas Integer types are not supported by <code>pd.DataFrame.interpolate()</code> and <code>np.uint16</code> will be used during the interpolation step.</p>
-<p>The code for this pre-processing can be found here: <a href="https://github.com/mads-hatters/SIADS-591-Orbital-Congestion/blob/main/job/gabbard/filter_raw_data_gabbard.ipynb"><code>filter_raw_data_gabbard.ipynb</code></a> and the reindex and interpolation code can be found at: <a href="https://github.com/mads-hatters/SIADS-591-Orbital-Congestion/blob/main/job/gabbard/process_gabbard_data_interpolated.ipynb"><code>process_gabbard_data_interpolated.ipynb</code></a>.</p>
+<p>The code for pre-processing this data can be found here: <a href="https://github.com/mads-hatters/SIADS-591-Orbital-Congestion/blob/main/job/gabbard/filter_raw_data_gabbard.ipynb"><code>filter_raw_data_gabbard.ipynb</code></a> and the reindex and interpolation code can be found at: <a href="https://github.com/mads-hatters/SIADS-591-Orbital-Congestion/blob/main/job/gabbard/process_gabbard_data_interpolated.ipynb"><code>process_gabbard_data_interpolated.ipynb</code></a>.</p>
+<h4 id="Annotating-and-Highlighting-Events">Annotating and Highlighting Events<a class="anchor-link" href="#Annotating-and-Highlighting-Events">&#182;</a></h4><p>To annotate events in the animated gabbard diagram, data from the <a href="#dm-breakup-pdf">Satellite Breakup PDF section</a> was used.  Initially, all the data was filtered automatically based on time and orbit, however, manual selection was needed due to the clutter of many minor events during certain years, as well as some data being nearly invisible in the diagram.  In the end, 79 events were chosen for their prominence and magnitude.  One event was added (2019 Microsat-R anti-satellite test) as it happened after the publish date of the document, and another required manual attribution for debris pieces due to that particular launch being related to two multiple events (all other breakup events came from different launches).</p>
+<p>The code for generating the gabbard diagram animation can be found at<a href="https://github.com/mads-hatters/SIADS-591-Orbital-Congestion/blob/main/job/gabbard/animated_gabbard.ipynb"><code>animated_gabbard.ipynb</code></a> and the manually updated and annotated breakup file is stored as <a href="https://github.com/mads-hatters/SIADS-591-Orbital-Congestion/blob/main/job/gabbard/breakup_custom.csv"><code>breakup_custom.csv</code></a>.</p>
 
 </div>
 </div>
@@ -14719,8 +14722,8 @@ The scrapper was written to run as a background job with output messages sent to
 <p><a href="#table-of-contents">Back to Top</a></p>
 <hr>
 <p><a id="analysis-visualization"></a></p>
-<h2 id="6.-Analysis-and-Visualization">6. Analysis and Visualization<a class="anchor-link" href="#6.-Analysis-and-Visualization">&#182;</a></h2><p>A dashboard was created to summarize and present, in an accessible way, some of the interactive visuals discussed in this report.  The dashboard can be accessed either online via Heroku or by running the notebook <a href=""><code>oc_dash.ipynb</code></a> in the source.  Both options use the same source code and data sources.</p>
-<p><a href="https://oc-dash.herokuapp.com/"><img src="images/dash_allsat.png" alt="Dashboard Homepage" style="width: 400px;"/></a>
+<h2 id="6.-Analysis-and-Visualization">6. Analysis and Visualization<a class="anchor-link" href="#6.-Analysis-and-Visualization">&#182;</a></h2><p>A dashboard was created to summarize and present, in an accessible way, some of the interactive visuals discussed in this report.  The dashboard can be accessed either online via Heroku or by running the notebook <a href="https://github.com/mads-hatters/SIADS-591-Orbital-Congestion/blob/main/dashboard/oc_dash.ipynb"><code>oc_dash.ipynb</code></a> in the source.  Both options use the same source code and data sources.</p>
+<p><span style="text-align:center; width:100%;display:block"><a href="https://oc-dash.herokuapp.com/" target="_blank"><img src="images/dash_allsat.png" alt="Dashboard Homepage" style="width: 400px;"/></a></span>
 <a href="https://oc-dash.herokuapp.com/"><center>https://oc-dash.herokuapp.com</center></a></p>
 
 </div>
@@ -14729,12 +14732,12 @@ The scrapper was written to run as a background job with output messages sent to
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p><a id="av-history"></a></p>
 <h3 id="A.-Satellite-Congestion-History">A. Satellite Congestion History<a class="anchor-link" href="#A.-Satellite-Congestion-History">&#182;</a></h3><p>In the past 60 years, the space around the Earth has gone from a virtually debris-free environment to a zone cluttered with man-made objects that potentially threaten launches, active satellites, and the International Space Station (ISS). Below time series graph illustrate the historical growth of space debris including rocket body as well as payload (i.e. satellite and spacecraft).</p>
-<p>The amount of debris in orbit has been increasing since 1958. The rate of growth slowed for a decade from 1996. However, the destruction of the Fengyun-1C weather satellite in 2007 and the collision of the inactive Russian satellite Cosmos and the active U.S.-based communication satellite Iridium in 2009 reversed that trend, creating at least 4000 pieces of debris. As a result, it increased the risk of impacts to the ISS by an estimated 44 percent over a 10-day period. <a href="https://www.nationalgeographic.com/science/space/reference/space-junk/"><sup>link1</sup></a>.</p>
-<p><img src="images/timeseries.PNG" alt="timeseries.PNG"></p>
-<p>In addition to above time series analysis, the bar chart below provides another view on the number of space objects in different orbits. Evidently, low-earth orbit (LEO) has the highest object count among all orbits stated. In 2020, approximately 80% of space objects are in LEO. LEO has become an orbital space junk yard. According to NASA, most “space junk” can reach a speed of 18,000 miles per hour, almost seven times faster than a bullet<a href="https://www.nasa.gov/centers/hq/library/find/bibliographies/space_debris"><sup>link2</sup></a>. Due to the rate of speed and the increasing number of debris in LEO, current and future space-based activities pose a safety risk to people and property in space and on Earth. The problem of managing space debris is every spacefaring country's responsibility and immediate action is needed to preserve the space environment.</p>
-<p><img src="images/tsorbit.png" alt="tsorbit.png"></p>
+<p>The amount of debris in orbit has been increasing since 1958. The rate of growth slowed for a decade from 1996. However, the destruction of the Fengyun-1C weather satellite in 2007 and the collision of the inactive Russian satellite Cosmos and the active U.S.-based communication satellite Iridium in 2009 reversed that trend, creating at least 4000 pieces of debris. As a result, it increased the risk of impacts to the ISS by an estimated 44 percent over a 10-day period. (<a href="https://www.nationalgeographic.com/science/space/reference/space-junk/">Wei-Haas, 2019</a>).</p>
+<p><span style="text-align:center; width:100%;display:block"><img src="images/timeseries.PNG"></span></p>
+<p>In addition to above time series analysis, the bar chart below provides another view on the number of space objects in different orbits. Evidently, low-earth orbit (LEO) has the highest object count among all orbits stated. In 2020, approximately 80% of space objects are in LEO. LEO has become an orbital space junk yard. According to NASA, most “space junk” can reach a speed of 18,000 miles per hour, almost seven times faster than a bullet (<a href="https://www.nasa.gov/centers/hq/library/find/bibliographies/space_debris">NASA, ret. 2020</a>). Due to the rate of speed and the increasing number of debris in LEO, current and future space-based activities pose a safety risk to people and property in space and on Earth. The problem of managing space debris is every spacefaring country's responsibility and immediate action is needed to preserve the space environment.</p>
+<p><span style="text-align:center; width:100%;display:block"><img src="images/tsorbit.png"></span></p>
 <p>An issue with evaluating the congestion of space is that satellites are not evenly spaced around Earth but rather are concentrated in different orbital bands (altitudes).  These congested orbits are where risks of collision are greatest.  Here is an animation that illustrates how this congestion has changed over time.</p>
-<p><img src="images/spatial.gif" alt="Spatial Density"></p>
+<p><span style="text-align:center; width:100%;display:block"><img src="images/spatial.gif"></span></p>
 
 </div>
 </div>
@@ -14743,18 +14746,18 @@ The scrapper was written to run as a background job with output messages sent to
 <p><a id="av-3dvisual"></a></p>
 <h3 id="B.-Visualizing-in-3D">B. Visualizing in 3D<a class="anchor-link" href="#B.-Visualizing-in-3D">&#182;</a></h3><h4 id="Using-Plotly">Using Plotly<a class="anchor-link" href="#Using-Plotly">&#182;</a></h4><p>To effectively visualize the orbits and intercepts of satellites, several options for presenting 3D visuals were researched.  Matplotlib and Plotly both provide 3D plotting functionality and are common libraries used in Python, although, matplotlib lacks the interactivity necessary to navigate a satellite orbit.  Because of this Plotly was first utilized.
 Plotly does have the capability for painting an image onto a 3D surface but only one color channel can be applied.  Also, since Plotly is utilizing functionality not designed to paint 3D surfaces with images, the image resolution must be kept at a minimum to improve performance.  In the end, a black and white, stereographic image of the earth was used to create an earth-like sphere.  To place a satellite marker on the Plotly 3D image, the Python package <a href="https://pypi.org/project/skyfield/"><code>skyfield</code></a> was used which offers the <code>EarthSatellite()</code> convenience function and outputs an x,y,z coordinate in kilometers with the center of the earth as the origin.</p>
-<p><img src="images/plotly_iss_orbit.png" alt="First interactive 3D graphic showing the Earth with ISS orbit" style="width: 346px;"/></p>
+<p><span style="text-align:center; width:100%;display:block"><img src="images/plotly_iss_orbit.png" alt="First interactive 3D graphic showing the Earth with ISS orbit" style="width: 346px;"/></span></p>
 <center>ISS orbit using Plotly</center><p>One of the goals for the dashboard and the reason for creating the <code>satellite_czml</code> python package was to visualize all the satellites in orbit on the present day using Cesium.  However, after assembling the pipeline to build and display the satellites, the amount of data proved to be too much and the visual was never able to load.  The amount of data necessary to plot over 20,000 satellites using a CZML string was slow and the amount of data too large for a timely response.  Using Javascript methods to calculate position instead of using CZML would have likely been a more suitable approach but this was abandoned due to time restraints in favor of using a 3D Plotly visual. Joined with Dash, the visual allows for the user to specify color coding and filtering options and the interactivity includes details for each satellite on mouse-hover.</p>
-<p><img src="images/allsat.gif" alt="All Satellites in Orbit (color by object type)" style="width: 800px;"/></p>
+<p><span style="text-align:center; width:100%;display:block"><img src="images/allsat.gif" alt="All Satellites in Orbit (color by object type)" style="width: 800px;"/></span></p>
 <center>All Satellites in Orbit (color by object type)</center><h4 id="Using-Cesium">Using Cesium<a class="anchor-link" href="#Using-Cesium">&#182;</a></h4><p>With the creation of <code>satellite_czml</code> package with Cesium, plots for intercepts and Starlink satellites reflect accurate satellite position, time of day and motion in an interactive environment. Each satellite also contains a detailed description with a dynamic hyperlink to more information about a selected satellite.  These visualizations illustrate the congested and variations in near-collisions that are at risk of occuring daily.</p>
-<p><img src="images/starlink.gif" alt="Starlink Satellites in Orbit" style="width: 800px;"/></p>
+<p><span style="text-align:center; width:100%;display:block"><img src="images/starlink.gif" alt="Starlink Satellites in Orbit" style="width: 800px;"/></span></p>
 <center>Starlink Satellites in Orbit</center>
 </div>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p><a id="av-maneuvers"></a></p>
-<h3 id="C.-Orbital-Maneuver-Detection">C. Orbital Maneuver Detection<a class="anchor-link" href="#C.-Orbital-Maneuver-Detection">&#182;</a></h3><p>The ability to detect whether a satellite performed a maneuver is needed in order to perform analysis on whether a satellite performed a risk mitigation maneuver (RMM) or not.  Artificial satellites with propulsion can adjust their orbit by performing two types of maneuvers.  The first is a orbit raising/lowering maneuver, where orbit raising is normally performed to counter the effects of atmosphere drag or to avoid other satellites.  Orbit lowering maneuvers are sometimes performed by braking instead during RMMs if an orbit raising maneuver is not an option.  The second type of maneuver is an inclination adjustment maneuver where the inclination is adjusted to keep the orbit within certain parameters (<a href="https://satellitesafety.gsfc.nasa.gov/maneuvers.html">source, NASA - Satellite Safety</a>).  Semimajor axis and inclination metrics of eight selected satellites will be examined to see if maneuvers can be detected correctly.  For simplicity, data will be examined in isolation from each other.</p>
+<h3 id="C.-Orbital-Maneuver-Detection">C. Orbital Maneuver Detection<a class="anchor-link" href="#C.-Orbital-Maneuver-Detection">&#182;</a></h3><p>The ability to detect whether a satellite performed a maneuver is needed in order to perform analysis on whether a satellite performed a risk mitigation maneuver (RMM) or not.  Artificial satellites with propulsion can adjust their orbit by performing two types of maneuvers.  The first is a orbit raising/lowering maneuver, where orbit raising is normally performed to counter the effects of atmosphere drag or to avoid other satellites.  Orbit lowering maneuvers are sometimes performed by braking instead during RMMs if an orbit raising maneuver is not an option.  The second type of maneuver is an inclination adjustment maneuver where the inclination is adjusted to keep the orbit within certain parameters (<a href="https://satellitesafety.gsfc.nasa.gov/maneuvers.html">NASA - Satellite Safety, ret. 2021</a>).  Semimajor axis and inclination metrics of eight selected satellites will be examined to see if maneuvers can be detected correctly.  For simplicity, data will be examined in isolation from each other.</p>
 <table>
 <thead><tr>
 <th style="text-align:left"><strong>Selected Satellite</strong></th>
@@ -14780,7 +14783,7 @@ Plotly does have the capability for painting an image onto a 3D surface but only
 <td style="text-align:left">Fermi Gamma-ray Space Telescope (GLAST)</td>
 <td style="text-align:left">33053</td>
 <td style="text-align:left">2011/12 to 2012/10</td>
-<td style="text-align:left">NASA revealed that GLAST performed an evasive maneuver in April of 2012. It had not performed any other maneuvers prior to this since being put in orbit (<a href="https://www.youtube.com/watch?v=npVgLM7Zd3M">source, NASA | Fermi's Close Call with a Soviet Satellite</a>).</td>
+<td style="text-align:left">NASA revealed that GLAST performed an evasive maneuver in April of 2012. It had not performed any other maneuvers prior to this since being put in orbit (<a href="https://www.youtube.com/watch?v=npVgLM7Zd3M">NASA | Fermi's Close Call with a Soviet Satellite, ret. 2021</a>).</td>
 </tr>
 <tr>
 <td style="text-align:left">International Space Station (ZARYA)</td>
@@ -14804,7 +14807,7 @@ Plotly does have the capability for painting an image onto a 3D surface but only
 <td style="text-align:left">PAYLOAD C (Shiyan 7)</td>
 <td style="text-align:left">39210</td>
 <td style="text-align:left">2013/08 to 2019/01</td>
-<td style="text-align:left">PAYLOAD C, or Shiyan 7 (SY-7, Experiment 7) is a Chinese satellite that possesses the ability to greatly alter its orbit rapidly, it made a series of big maneuvers in its first 3 years of service and continued to make tiny adjustments after that (<a href="https://spacepolicyonline.com/news/surprise-chinese-satelllite-maneuvers-mystify-western-experts/">Source, SPACEPOLICYONLINE.COM | Surprise Chinese Satellite Maneuvers Mystify Western Experts</a>).</td>
+<td style="text-align:left">PAYLOAD C, or Shiyan 7 (SY-7, Experiment 7) is a Chinese satellite that possesses the ability to greatly alter its orbit rapidly, it made a series of big maneuvers in its first 3 years of service and continued to make tiny adjustments after that (<a href="https://spacepolicyonline.com/news/surprise-chinese-satelllite-maneuvers-mystify-western-experts/">SPACEPOLICYONLINE.COM | Surprise Chinese Satellite Maneuvers Mystify Western Experts, ret. 2021</a>).</td>
 </tr>
 <tr>
 <td style="text-align:left">STARLINK-1007</td>
@@ -14815,7 +14818,7 @@ Plotly does have the capability for painting an image onto a 3D surface but only
 </tbody>
 </table>
 <h4 id="Visualizing-Different-Detection-Methods">Visualizing Different Detection Methods<a class="anchor-link" href="#Visualizing-Different-Detection-Methods">&#182;</a></h4><p>Various methods and thresholds for detecting maneuvers were examined for their effectiveness.  For each satellite, multiple exploratory charts were generated for visual evaluation.</p>
-<p><img src="images/iss_maneuver_detection.png" alt="iss_maneuver_detection.png"></p>
+<p><span style="text-align:center; width:100%;display:block"><img src="images/iss_maneuver_detection.png"></span></p>
 <p>The above chart explores potential maneuver detection methods based on ISS data - lots of potential orbit raising and lowering maneuvers were detected, likely being overly sensitive, while showing almost nothing on inclination adjustments.  Similar charts for the other satellites are availble to view on the <a href="https://oc-dash.herokuapp.com/">dashboard</a> or can be found at <a href="https://github.com/mads-hatters/SIADS-591-Orbital-Congestion/tree/main/images/maneuver_analysis"><code>images/maneuver_analysis/</code></a>.</p>
 <p>In the above chart, the left set of images represents detection methods for inclination adjustment maneuvers, while the right column represents detection for orbital raising / lowering maneuvers.  These detection methods are ordered by sensitivy, with the <code>diff</code> type detection being highly sensitive while a large <code>rolling</code> window being less sensitive.  Multiple thresholds were also selected for each method.  The resulting graphs highlight time ranges in orange where maneuvers were detected.  The lighter orange shades are detected by the most sensitive thresholds and while the darker orange shades only show more obvious maneuvers.</p>
 <p>Based on the results, <code>rolling_10_neighbor_diff</code>, comparing two rolling windows with size of before and after a point, with a threshold of 0.008 was selected for detecting inclination adjustment maneuvers, and a <code>rolling_3_neighbor_diff</code> with a threshold of 0.025 was selected for detecting orbit raising / lowering maneuvers.  The results:</p>
@@ -14877,31 +14880,31 @@ Plotly does have the capability for painting an image onto a 3D surface but only
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p><a id="av-collisions"></a></p>
-<h3 id="D.-Collisions-and-Near-Misses">D. Collisions and Near Misses<a class="anchor-link" href="#D.-Collisions-and-Near-Misses">&#182;</a></h3><h4 id="Collisions">Collisions<a class="anchor-link" href="#Collisions">&#182;</a></h4><p>Collisions between objects in space are hypervelocity collisions where the velocity (v) of the impactor (relative to the target) is so great that its kinetic energy ( $K = \frac{m v^2}{2}$) is greater than the energy released in the detonation of the same mass (m) of high explosive.<a href="https://www.spaceacademy.net.au/watch/debris/collision.htm"><sup>link3</sup></a></p>
+<h3 id="D.-Collisions-and-Near-Misses">D. Collisions and Near Misses<a class="anchor-link" href="#D.-Collisions-and-Near-Misses">&#182;</a></h3><h4 id="Collisions">Collisions<a class="anchor-link" href="#Collisions">&#182;</a></h4><p>Collisions between objects in space are hypervelocity collisions where the velocity (v) of the impactor (relative to the target) is so great that its kinetic energy ( $K = \frac{m v^2}{2}$) is greater than the energy released in the detonation of the same mass (m) of high explosive. (<a href="https://www.spaceacademy.net.au/watch/debris/collision.htm">Australian Space Academy, ret. 2020</a>)</p>
 <p>In low Earth orbit, the velocity of a satellite is between 7 and 8 km/sec and the typical collision velocity between two space objects in LEO is around 10 km/sec. An accidental LEO collision will most likely be a hypervelocity collision. The deliberate destruction of a satellite with a launched missile is also a hypervelocity collision. A hypervelocity collision may be categorised as catastrophic or non-catastrophic. A catastrophic impact results in both the target and the impactor being totally destroyed while in a non-catastrophic event, the impactor is detroyed and the target is damaged.</p>
 <p>Fragments ejected from a collision will have a new orbit dependent upon the magnitude of the ejection velocity and the direction of this velocity vector with respect to the velocity vector of the satellite at the time of collision. If the velocity is in the same direction as the original target motion (A), the initial orbit will be turned into a larger elliptial orbit. On the other hand, if the velocity is in the opposite direction (B), the final orbit will become smaller than the initial orbit. This is illustrated in the figure below:</p>
-<p><img src="images/orbital%20change.PNG" alt="orbital%20change.PNG"></p>
+<p><span style="text-align:center; width:100%; display:block"><img src="images/orbital%20change.PNG"></span></p>
 <h4 id="Gabbard-Diagram">Gabbard Diagram<a class="anchor-link" href="#Gabbard-Diagram">&#182;</a></h4><p>John Gabbard developed a diagram for illustrating the orbital changes and the orbital decay of debris fragments. A Gabbard diagram is a scatter plot of orbit altitude versus orbital period. Since all orbits are elliptical, a Gabbard diagram plots two points for each satellite: the apogee and perigee.  Each pair of points will share the same orbital period and thus will be vertically aligned.</p>
 <h4 id="FengYun-1C-Anti-satellite-Missile-Test">FengYun-1C Anti-satellite Missile Test<a class="anchor-link" href="#FengYun-1C-Anti-satellite-Missile-Test">&#182;</a></h4><p>On 11 January 2007, a non-operational Chinese weather satellite, the Fengyun-1C (FY-1C) was destroyed by a kinetic kill vehicle (missle) traveling with a speed of 8 km/s in the opposite direction at an altitude of 863 km.</p>
 <p>The below Gabbard diagram illustrates the aftermath of this collision: 
 1) 3526 pieces of debris of trackable sizes are documented and 646 pieces have decayed.</p>
 <p>2) The cross sign (x) marks the location of collision at the altitude of 863km which is low earth orbit(LEO).  When a collision happens at a low altitude, some of the fragments ejected in the opposite direction to the original motion will be forced into orbits with a perigee below the Earth's surface. As a result, these fragments with smaller mass will generally burn up during reentry. Those of a larger mass tend to decay later due to their momentum until atmospheric drag causes them to deorbit.</p>
 <p>3) Fragments with a perigee of less than about 100 km will encounter so much air resistance that they will never make it back to apogee, and will deorbit in less than one period. This explains the decay objects on the bottom left of the graph (purple and orange points) and the progessive drop in apogee as the period gets smaller.</p>
-<p><img src="images/Gabbard%20Fengyun.PNG" alt="Gabbard%20Fengyun.PNG"></p>
+<p><span style="text-align:center; width:100%;display:block"><img src="images/Gabbard%20Fengyun.PNG"></span></p>
 <h4 id="Iridium-33-and-Kosmos-2251">Iridium 33 and Kosmos-2251<a class="anchor-link" href="#Iridium-33-and-Kosmos-2251">&#182;</a></h4><p>On 10 February 2009, the Iridium 33 satellite collided with Kosmos-2251 causing massive debris clouds to form.  To see if Cesium could be used to visualize this impact, the TLE data was gathered for the satellites just prior and after the collision.  The resulting simulation successfully showed the two satellites paths intersecting in the artic circle.</p>
-<p><img src="images/iridum-kosmos1.png" alt="Two satellites intersecting" style="width: 70%;"/></p>
+<p><span style="text-align:center; width:100%;display:block"><img src="images/iridum-kosmos1.png" alt="Two satellites intersecting" style="width: 70%;"/></span></p>
 <center>Iridium-33 and Kosmos-2251 Collision Point</center><p>Next, the TLE data for each piece of debris was collected.  Knowing that the TLE data for each piece of debris was collected after the collision, in some cases months after the collision, the debris position needed to be back dated to the time of the collision which would undoutably contain some error.  After calculating the debris position at the time of collision using the first available TLE, Cesium showed debris scattered along each orbit instead of centered on the point of collision.  The true error in the TLE data was overwhelming to the point that this exercise was scrapped.</p>
-<p><img src="images/iridium-kosmos.gif" alt="Debris clouds circling earth" style="width: 70%;"/></p>
+<p><span style="text-align:center; width:100%;display:block"><img src="images/iridium-kosmos.gif" alt="Debris clouds circling earth" style="width: 70%;"/></span></p>
 <center>Iridium-33 and Kosmos-2251 Debris Back-Dated</center><h4 id="Plotting-Near-Misses">Plotting Near Misses<a class="anchor-link" href="#Plotting-Near-Misses">&#182;</a></h4><p>To visualize the high probability collision predictions from SOCRATES, Cesium was used and animated to allow for a realistic inspection of the point in time when two satellites nearly intercept.  This visualization technique is web-based and supported within the dashboard.  Through these visualizations, it becomes evident how minor changes in orbit will have major impacts on collision probability.</p>
-<p><img src="images/intercept.gif" alt="Two satellites intercepting" style="width: 800px;"/></p>
+<p><span style="text-align:center; width:100%;display:block"><img src="images/intercept.gif" alt="Two satellites intercepting" style="width: 800px;"/></span></p>
 <h4 id="Risk-Mitigation-Maneuvers">Risk Mitigation Maneuvers<a class="anchor-link" href="#Risk-Mitigation-Maneuvers">&#182;</a></h4><p>With the SOCRATES dataset and the maneuver detection function in place, it is now possible to examine whether any RMMs had taken place.  131 incidents where a predicted collision chance of greater than 0.5% were found according to SOCRATES, and maneuver detection for each incident was performed.</p>
-<p><a href="images/socrates_sankey.png" target="_blank"><img src="images/socrates_sankey.png" /></a></p>
+<p><span style="text-align:center; width:100%;display:block"><a href="images/socrates_sankey.png" target="_blank"><img src="images/socrates_sankey.png" /></a></span></p>
 <p>The following images show each satellite's semimajor axis, inclination, and detected maneuvers in the top chart while the bottom one shows the first relevant SOCRATES date in green, collision probability in purple, and the time of closest approach in red.  The grey line represents when a new TLE entry became available, updating the satellites trajectory and position.  In the case of a RMM happening, a maneuver period should be highlighted near or after the high probability being predicted.</p>
 <table>
 <thead><tr>
-<th style="text-align:left"><div style="width:100px">**Risk Mitigation Maneuver Group**</div></th>
+<th style="text-align:left"><div style="width:100px"><strong>Risk Mitigation Maneuver Group</strong></div></th>
 <th style="text-align:left"><strong>Description</strong></th>
-<th style="text-align:left"><div style="width:500px">**Image**</div></th>
+<th style="text-align:left"><div style="width:500px"><strong>Image</strong></div></th>
 </tr>
 </thead>
 <tbody>
@@ -14951,7 +14954,28 @@ Plotly does have the capability for painting an image onto a 3D surface but only
 <p><a id="av-agabbard"></a></p>
 <h3 id="E.-Debris-Gabbard-Diagram-Animation">E. Debris Gabbard Diagram Animation<a class="anchor-link" href="#E.-Debris-Gabbard-Diagram-Animation">&#182;</a></h3><p>The growth of debris in LEO as well as contributions by individual debris generating events can be visualized as a Gabbard diagram animation.  Each object is represented by two points in the Gabbard diagram, a lower periapsis point and a higher apoapsis along the same x-axis.  An object with an elliptical orbit will have the two points further away, while a stationary orbit will have points close together.  A diagonal border separating the periapsis and apoapsis points formed by circular orbits of varying orbital periods can be seen on the diagram.</p>
 <p>Orbits decay naturally due to various factors and the points on the Gabbard diagram will appear to move towards the bottom left corner.  For orbits around earth, factors such as atmospheric drag and thermal radiation can affect satellites at altitudes as high as 700–800 km during periods of increased solar activity.  Higher rates of orbital decay can be observed during periods with increased solar activtiy in 1979, 1989, 2001, 2003, 2011, and 2014.</p>
-<iframe width="800" height="500" src="https://www.youtube.com/embed/SFxkE_S9HJ0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><p>Note: Due to small particle sizes, full screen viewing is recommended.</p>
+<p>Highlighting data points with a different color and adding text annotations can add much needed context context to the visualizations.  Here, text and color annotations were added to emphasize the cause and magnitude of the breakup events.</p>
+<table>
+<thead><tr>
+<th style="text-align:left"></th>
+<th style="text-align:left"></th>
+<th style="text-align:left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><a href="images/agabbard_no_annotation.png"><img src="images/agabbard_no_annotation.png" /></a></td>
+<td style="text-align:left"><a href="images/agabbard_small_event.png"><img src="images/agabbard_small_event.png" /></a></td>
+<td style="text-align:left"><a href="images/agabbard_big_event.png"><img src="images/agabbard_big_event.png" /></a></td>
+</tr>
+<tr>
+<td style="text-align:left"><span style="text-align:center;display:block">*No annotation*</span></td>
+<td style="text-align:left"><span style="text-align:center;display:block">*Smaller Breakup Event*</span></td>
+<td style="text-align:left"><span style="text-align:center;display:block">*Huge Breakup Event*</span></td>
+</tr>
+</tbody>
+</table>
+<div style="text-align:center; width:100%"><iframe width="800" height="500" src="https://www.youtube.com/embed/SFxkE_S9HJ0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><p>Note: Due to small particle sizes, full screen viewing is recommended.</p>
 
 </div>
 </div>
@@ -14959,7 +14983,7 @@ Plotly does have the capability for painting an image onto a 3D surface but only
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p><a id="av-starlink"></a></p>
 <h3 id="F.-Starlink-and-Future-Super-Satellite-Clusters">F. Starlink and Future Super Satellite Clusters<a class="anchor-link" href="#F.-Starlink-and-Future-Super-Satellite-Clusters">&#182;</a></h3><p>At present, there are several satellite constellations in orbit around Earth.  Although, the largest without considering Starlink is Iridium NEXT with 66 satellites, Starlink has quickly taken over as the single largest satellite constellation in LEO.  Knowing that current Starlink satellites are only a sliver of what SpaceX has planned, several new companies are looking to make their mark in space, increasing concerns of what this congestion will cause future space missions.  Several new companies like Amazon, Samsung, and Boeing, among others, have made proposals to add thousands of satellites into Earth's orbit.  The following graph models, at a very high-level, what this future spatial density could look like in LEO.</p>
-<p><img src="./images/future_density.png" alt="Future Spatial Density"></p>
+<p><span style="text-align:center; width:100%;display:block"><img alt="Future Spatial Density" src="images/future_density.png"></span></p>
 
 </div>
 </div>
@@ -15002,7 +15026,7 @@ Plotly does have the capability for painting an image onto a 3D surface but only
 </tr>
 <tr>
 <td style="text-align:left">Nicholas Miller</td>
-<td style="text-align:left"><ul><li>Spatial Density Plots</li><li>3D visualizations and `satellite_czml` python package</li><li>Dashboard</li><li>SOCRATES Data Scrapper</li><li>Final Report</li></ul></td>
+<td style="text-align:left"><ul><li>Spatial Density Plots</li><li>3D visualizations and <code>satellite_czml</code> python package</li><li>Dashboard</li><li>SOCRATES Data Scrapper</li><li>Final Report</li></ul></td>
 </tr>
 </tbody>
 </table>
